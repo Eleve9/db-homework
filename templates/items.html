@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+</head>
+<body>
+    <h1>商品列表页面</h1>
+
+    {% if msg %}
+    <p><strong>{{ msg }}</strong></p>
+    {% endif %}
+
+    <h2>基本查询</h2>
+    <p>
+        <a href="/items">查看全部商品</a> |
+        <a href="/items?mode=unsold">查询所有未售出的商品</a> |
+        <a href="/items?mode=price_gt_30">查询价格大于 30 的商品</a> |
+        <a href="/items?mode=daily_goods">查询生活用品类商品</a> |
+        <a href="/items?mode=seller_u001">查询 u001 发布的所有商品</a>
+    </p>
+
+    <h2>{{ query_title }}</h2>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>商品ID</th>
+            <th>商品名</th>
+            <th>类别</th>
+            <th>价格</th>
+            <th>状态</th>
+            <th>卖家ID</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item['item_id'] }}</td>
+            <td>{{ item['item_name'] }}</td>
+            <td>{{ item['category'] }}</td>
+            <td>{{ item['price'] }}</td>
+            <td>
+                {% if item['status'] == 0 %}
+                    未售出
+                {% else %}
+                    已售出
+                {% endif %}
+            </td>
+            <td>{{ item['seller_id'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+
+    <h2>1. 插入一个新商品</h2>
+    <form action="/add_item" method="post">
+        <p>商品ID：<input type="text" name="item_id" required></p>
+        <p>商品名：<input type="text" name="item_name" required></p>
+        <p>类别：<input type="text" name="category" required></p>
+        <p>价格：<input type="number" step="0.01" name="price" required></p>
+        <p>卖家ID：<input type="text" name="seller_id" required></p>
+        <button type="submit">添加商品</button>
+    </form>
+
+    <hr>
+
+    <h2>2. 修改某商品价格</h2>
+    <form action="/update_price" method="post">
+        <p>商品ID：<input type="text" name="item_id" required></p>
+        <p>新价格：<input type="number" step="0.01" name="new_price" required></p>
+        <button type="submit">修改价格</button>
+    </form>
+
+    <hr>
+
+    <h2>3. 删除一个未售出的商品</h2>
+    <form action="/delete_item" method="post">
+        <p>商品ID：<input type="text" name="item_id" required></p>
+        <button type="submit">删除未售商品</button>
+    </form>
+
+    <hr>
+
+    <h2>4. 购买商品</h2>
+    <form action="/buy_item" method="post">
+        <p>订单ID：<input type="text" name="order_id" required></p>
+        <p>商品ID：<input type="text" name="item_id" required></p>
+        <p>买家ID：<input type="text" name="buyer_id" required></p>
+        <p>购买日期：<input type="date" name="order_date" required></p>
+        <button type="submit">购买商品</button>
+    </form>
+
+    <hr>
+
+    <a href="/">返回首页</a>
+</body>
+</html>

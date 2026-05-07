@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+</head>
+<body>
+    <h1>用户列表页面</h1>
+
+    <h2>用户数据</h2>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>电话</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user['user_id'] }}</td>
+            <td>{{ user['user_name'] }}</td>
+            <td>{{ user['phone'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+
+    <h2>聚合与分组结果</h2>
+
+    <h3>1. 商品总数</h3>
+    <p>{{ total_items['total_items'] }}</p>
+
+    <h3>2. 每类商品数量</h3>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>类别</th>
+            <th>数量</th>
+        </tr>
+        {% for row in category_counts %}
+        <tr>
+            <td>{{ row['category'] }}</td>
+            <td>{{ row['cnt'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>3. 所有商品平均价格</h3>
+    <p>{{ '%.2f'|format(avg_price['avg_price']) }}</p>
+
+    <h3>4. 发布商品数量最多的用户</h3>
+    <p>
+        用户ID：{{ top_user['user_id'] }}<br>
+        用户名：{{ top_user['user_name'] }}<br>
+        发布商品数：{{ top_user['item_count'] }}
+    </p>
+
+    <br>
+    <a href="/">返回首页</a>
+</body>
+</html>

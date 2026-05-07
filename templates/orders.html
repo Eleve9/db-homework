@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>订单列表</title>
+</head>
+<body>
+    <h1>订单列表页面</h1>
+
+    <h2>连接查询</h2>
+    <p>
+        <a href="/orders">查询每个订单：商品名 + 买家名 + 日期</a> |
+        <a href="/orders?mode=sold_with_buyer">查询所有已售商品及其买家姓名</a> |
+        <a href="/orders?mode=seller_u001_status">查询卖家是 u001 的商品是否被购买</a>
+    </p>
+
+    <h2>{{ query_title }}</h2>
+
+    {% if mode == 'order_detail' %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>订单ID</th>
+            <th>商品名</th>
+            <th>买家名</th>
+            <th>日期</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+            <td>{{ row['order_id'] }}</td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{ row['buyer_name'] }}</td>
+            <td>{{ row['order_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if mode == 'sold_with_buyer' %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>商品ID</th>
+            <th>商品名</th>
+            <th>买家姓名</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+            <td>{{ row['item_id'] }}</td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{ row['buyer_name'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if mode == 'seller_u001_status' %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>商品ID</th>
+            <th>商品名</th>
+            <th>是否被购买</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+            <td>{{ row['item_id'] }}</td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{ row['purchase_status'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <hr>
+
+    <h2>视图展示</h2>
+
+    <h3>1. 已售商品视图（商品名 + 买家ID）</h3>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>商品名</th>
+            <th>买家ID</th>
+        </tr>
+        {% for row in sold_view %}
+        <tr>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{ row['buyer_id'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>2. 未售商品视图</h3>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>商品ID</th>
+            <th>商品名</th>
+            <th>类别</th>
+            <th>价格</th>
+            <th>卖家ID</th>
+        </tr>
+        {% for row in unsold_view %}
+        <tr>
+            <td>{{ row['item_id'] }}</td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{ row['category'] }}</td>
+            <td>{{ row['price'] }}</td>
+            <td>{{ row['seller_id'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/">返回首页</a>
+</body>
+</html>
